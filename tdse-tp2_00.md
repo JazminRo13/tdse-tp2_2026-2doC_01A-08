@@ -1,85 +1,72 @@
-## Paso 07
+# Trabajo Práctico: Codificación de Diagramas de Estado en C
 
-Pasar un diagrama de estados (también conocido como Máquina de Estados Finitos) a código C es una de las habilidades más útiles en programación, especialmente para sistemas embebidos, automatización y desarrollo de videojuegos.El patrón "estándar" y más fácil de implementar en C se basa en dos pilares:Un enum para definir todos los estados posibles.Un bloque switch-case para evaluar el estado actual y decidir si ocurre una transición basada en los eventos (entradas).Para que lo veas con claridad, vamos a traducir el siguiente diagrama de ejemplo directamente a código:Traducción de Diagrama a Código CFíjate cómo cada círculo del diagrama se convierte en un case dentro del switch, y cada flecha de transición se convierte en una condición if que evalúa un evento.C#include <stdio.h>
+## 1. Concepto Básico
+La forma más estructurada, legible y común de traducir un diagrama de estados (también conocido como Máquina de Estados Finitos o FSM) a lenguaje C se basa en dos pilares fundamentales:
+*   **Enumeraciones (`enum`)**: Se utilizan para definir todos los estados posibles (los círculos del diagrama) y los eventos (las flechas o condiciones de transición).
+*   **Estructura condicional (`switch-case`)**: Se emplea para evaluar en qué estado nos encontramos actualmente y qué transición debemos ejecutar en función del evento recibido.
 
-// 1. Definimos los estados (los círculos del diagrama)
+## 2. Plantilla de Código C
+A continuación, se presenta un código base funcional. En este ejemplo, el sistema transita entre tres estados: Inicial, Activo y Error.
+
+```c
+#include <stdio.h>
+
+// 1. Definir los estados posibles (Nodos del diagrama)
 typedef enum {
-    ESTADO_A,
-    ESTADO_B,
-    ESTADO_C,
-    ESTADO_D
-} Estado;
+    ESTADO_INICIAL,
+    ESTADO_ACTIVO,
+    ESTADO_ERROR
+} Estado_t;
 
-// 2. Definimos los eventos o disparadores (las flechas)
+// 2. Definir los eventos (Flechas o disparadores)
 typedef enum {
-    EVENTO_FORWARD,
-    EVENTO_BACK,
-    EVENTO_RESET,
-    EVENTO_NINGUNO // Útil si en un ciclo no pasó nada
-} Evento;
+    EVENTO_INICIAR,
+    EVENTO_FALLO,
+    EVENTO_RESET
+} Evento_t;
 
-// Variable global (o local dentro de tu bucle principal) para el estado
-Estado estadoActual = ESTADO_A; 
+// Variable global o local que guarda la memoria del sistema
+Estado_t estado_actual = ESTADO_INICIAL;
 
-// 3. La lógica de la máquina de estados
-void procesarEstado(Evento evento) {
-    switch (estadoActual) {
+// 3. Función principal de la Máquina de Estados
+void actualizar_estado(Evento_t evento) {
+    switch (estado_actual) {
         
-        case ESTADO_A:
-            // Desde A, solo podemos ir hacia adelante (Forward) a B
-            if (evento == EVENTO_FORWARD) {
-                estadoActual = ESTADO_B;
-                printf("Transicion: A -> B\n");
+        case ESTADO_INICIAL:
+            if (evento == EVENTO_INICIAR) {
+                estado_actual = ESTADO_ACTIVO;
+                printf("Transicion: INICIAL -> ACTIVO\n");
             }
             break;
-
-        case ESTADO_B:
-            if (evento == EVENTO_FORWARD) {
-                estadoActual = ESTADO_C;
-                printf("Transicion: B -> C\n");
-            } else if (evento == EVENTO_BACK) {
-                estadoActual = ESTADO_A;
-                printf("Transicion: B -> A\n");
-            } else if (evento == EVENTO_RESET) {
-                estadoActual = ESTADO_A;
-                printf("Reset: B -> A\n");
+            
+        case ESTADO_ACTIVO:
+            if (evento == EVENTO_FALLO) {
+                estado_actual = ESTADO_ERROR;
+                printf("Transicion: ACTIVO -> ERROR\n");
             }
             break;
-
-        case ESTADO_C:
-            if (evento == EVENTO_FORWARD) {
-                estadoActual = ESTADO_D;
-                printf("Transicion: C -> D\n");
-            } else if (evento == EVENTO_BACK) {
-                estadoActual = ESTADO_B;
-                printf("Transicion: C -> B\n");
-            } else if (evento == EVENTO_RESET) {
-                estadoActual = ESTADO_A;
-                printf("Reset: C -> A\n");
+            
+        case ESTADO_ERROR:
+            if (evento == EVENTO_RESET) {
+                estado_actual = ESTADO_INICIAL;
+                printf("Transicion: ERROR -> INICIAL\n");
             }
             break;
-
-        case ESTADO_D:
-            // Desde D, no hay Forward, solo podemos retroceder o resetear
-            if (evento == EVENTO_BACK) {
-                estadoActual = ESTADO_C;
-                printf("Transicion: D -> C\n");
-            } else if (evento == EVENTO_RESET) {
-                estadoActual = ESTADO_A;
-                printf("Reset: D -> A\n");
-            }
+            
+        default:
+            // Buenas prácticas: Manejo de seguridad
+            estado_actual = ESTADO_INICIAL;
             break;
     }
 }
 
 int main() {
-    // Ejemplo de uso: simulamos una secuencia de eventos
-    printf("Iniciando en Estado A...\n");
-    procesarEstado(EVENTO_FORWARD); // Debería ir a B
-    procesarEstado(EVENTO_FORWARD); // Debería ir a C
-    procesarEstado(EVENTO_BACK);    // Debería volver a B
-    procesarEstado(EVENTO_RESET);   // Debería volver a A
+    printf("Sistema iniciado.\n");
+    
+    // Simulacion de eventos que llegan al sistema
+    actualizar_estado(EVENTO_INICIAR); // Transita a ACTIVO
+    actualizar_estado(EVENTO_FALLO);   // Transita a ERROR
+    actualizar_estado(EVENTO_RESET);   // Transita a INICIAL
     
     return 0;
 }
-3 Consejos de Oro para tu Trabajo PrácticoSepara las acciones de las transiciones: En el ejemplo de arriba solo cambiamos de estado. En un caso real, puede que necesites encender un motor o imprimir un ticket. Es mejor que el código que "hace cosas" se ejecute después de evaluar las transiciones, o en funciones separadas, para que tu switch no se convierta en un espagueti de miles de líneas.Valida el estado inicial: Siempre asegúrate de que tu variable estadoActual esté inicializada en el estado de reposo correcto antes de que arranque el bucle de tu programa.Cuidado con los bloqueos: Asegúrate de que todos los estados tengan al menos una vía de escape (una transición a otro estado). Si un estado no tiene transiciones de salida, tu programa se quedará atascado ahí para siempre (a esto se le llama un estado "sumidero").
