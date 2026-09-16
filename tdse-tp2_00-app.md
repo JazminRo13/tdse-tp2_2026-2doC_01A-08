@@ -55,3 +55,19 @@ Insertar instrucciones como `LOGGER_INFO()` **dentro de las rutinas de las tarea
 3. **Colapso del Modelo Basado en Eventos:** Si `g_app_runtime_us` excede 1 milisegundo (el *tick* del sistema SysTick), la variable `g_app_tick_cnt` comenzará a acumular iteraciones atrasadas y las tareas de tiempo real no lograrán cumplir con su meta operativa de ejecutarse, corrompiendo la arquitectura de eventos en tiempo real. 
 
 Por estas razones, el *logging* y rutinas de impresión **jamás deben ejecutarse** dentro de bloques medidos por *profiling* ni dentro de tareas deterministas de lazos cerrados, a menos que se desee explícitamente evaluar el costo (generalmente prohibitivo) de imprimir en la consola serial.
+
+## Valores de la práctica.
+Después de varias ejecuciones (4 segundos) valor de la variable:
+ - task_dta_list[0].NOE = 7678
+ - task_dta_list[0].LET = 4
+ - task_dta_list[0].BCET = 4
+ - task_dta_list[0].WCET = 4
+ - task_dta_list[1].NOE = 7678
+ - task_dta_list[1].LET = 3
+ - task_dta_list[1].BCET = 3
+ - task_dta_list[1].WCET = 3
+ - task_dta_list[2].NOE = 7678
+ - task_dta_list[2].LET = 2
+ - task_dta_list[2].BCET = 2
+ - task_dta_list[2].WCET = 2
+
