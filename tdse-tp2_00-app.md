@@ -58,16 +58,16 @@ Por estas razones, el *logging* y rutinas de impresión **jamás deben ejecutars
 
 ## Valores de la práctica.
 Después de varias ejecuciones (4 segundos) valor de la variable:
- - task_dta_list[0].NOE = 7678
- - task_dta_list[0].LET = 4
- - task_dta_list[0].BCET = 4
- - task_dta_list[0].WCET = 4
+ - task_dta_list[0].NOE = 7678 
+ - task_dta_list[0].LET = 4 us
+ - task_dta_list[0].BCET = 4 us
+ - task_dta_list[0].WCET = 4 us
  - task_dta_list[1].NOE = 7678
- - task_dta_list[1].LET = 3
- - task_dta_list[1].BCET = 3
- - task_dta_list[1].WCET = 3
+ - task_dta_list[1].LET = 3 us
+ - task_dta_list[1].BCET = 3 us
+ - task_dta_list[1].WCET = 3 us
  - task_dta_list[2].NOE = 7678
- - task_dta_list[2].LET = 2
- - task_dta_list[2].BCET = 2
- - task_dta_list[2].WCET = 2
+ - task_dta_list[2].LET = 2 us
+ - task_dta_list[2].BCET = 2 us
+ - task_dta_list[2].WCET = 2 us
 
