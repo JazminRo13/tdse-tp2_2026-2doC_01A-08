@@ -50,7 +50,7 @@
 /********************** macros and definitions *******************************/
 #define DEL_BTN_MIN		0ul
 #define DEL_BTN_MED		25ul
-#define DEL_BTN_MAX		1000ul
+#define DEL_BTN_MAX		50ul
 
 #define SENSOR_CFG_QTY		(sizeof(task_sensor_cfg_list)/sizeof(task_sensor_cfg_t))
 #define SENSOR_DTA_QTY		SENSOR_CFG_QTY
@@ -146,7 +146,7 @@ void task_sensor_statechart(uint32_t index)
 			{
 				p_task_sensor_dta->tick = DEL_BTN_MAX;
 				p_task_sensor_dta->state = ST_BTN_FALLING;
-				LOGGER_INFO("Sensor %lu: ST_BTN_UP -> ST_BTN_FALLING", task_sensor_cfg_list->identifier);
+				LOGGER_INFO("Sensor %u: ST_BTN_UP -> ST_BTN_FALLING", task_sensor_cfg_list->identifier);
 			}
 			break;
 
@@ -154,7 +154,7 @@ void task_sensor_statechart(uint32_t index)
 			if (EV_BTN_UP == p_task_sensor_dta->event)
 			{
 				p_task_sensor_dta->state = ST_BTN_UP;
-				LOGGER_INFO("Sensor %lu: ST_BTN_FALLING -> ST_BTN_UP (Rebote descartado)", task_sensor_cfg_list->identifier);
+				LOGGER_INFO("Sensor %u: ST_BTN_FALLING -> ST_BTN_UP (Rebote descartado)", task_sensor_cfg_list->identifier);
 			}
 			else if (EV_BTN_DOWN == p_task_sensor_dta->event)
 			{
@@ -166,7 +166,7 @@ void task_sensor_statechart(uint32_t index)
 				{
 					put_event_task_system(p_task_sensor_cfg->signal_down);
 					p_task_sensor_dta->state = ST_BTN_DOWN;
-					LOGGER_INFO("Sensor %lu: ST_BTN_FALLING -> ST_BTN_DOWN (Pulsacion Confirmada)", task_sensor_cfg_list->identifier);
+					LOGGER_INFO("Sensor %u: ST_BTN_FALLING -> ST_BTN_DOWN (Pulsacion Confirmada)", task_sensor_cfg_list->identifier);
 				}
 			}
 			break;
@@ -184,7 +184,7 @@ void task_sensor_statechart(uint32_t index)
 			if (EV_BTN_DOWN == p_task_sensor_dta->event)
 			{
 				p_task_sensor_dta->state = ST_BTN_DOWN;
-				LOGGER_INFO("Sensor %lu: ST_BTN_RISING -> ST_BTN_DOWN (Rebote descartado)", task_sensor_cfg_list->identifier);
+				LOGGER_INFO("Sensor %u: ST_BTN_RISING -> ST_BTN_DOWN (Rebote descartado)", task_sensor_cfg_list->identifier);
 			}
 			else if (EV_BTN_UP == p_task_sensor_dta->event)
 			{
@@ -196,7 +196,7 @@ void task_sensor_statechart(uint32_t index)
 				{
 					put_event_task_system(p_task_sensor_cfg->signal_up);
 					p_task_sensor_dta->state = ST_BTN_UP;
-					LOGGER_INFO("Sensor %lu: ST_BTN_RISING -> ST_BTN_UP (Liberacion Confirmada)", task_sensor_cfg_list->identifier);
+					LOGGER_INFO("Sensor %u: ST_BTN_RISING -> ST_BTN_UP (Liberacion Confirmada)", task_sensor_cfg_list->identifier);
 				}
 			}
 			break;
