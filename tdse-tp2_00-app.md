@@ -59,16 +59,23 @@ Insertar instrucciones como `LOGGER_INFO()` **dentro de las rutinas de las tarea
 Por estas razones, el *logging* y rutinas de impresión **jamás deben ejecutarse** dentro de bloques medidos por *profiling* ni dentro de tareas deterministas de lazos cerrados, a menos que se desee explícitamente evaluar el costo (generalmente prohibitivo) de imprimir en la consola serial.
 
 ## Valores de la práctica.
-Después de varias ejecuciones (4 segundos) valor de la variable:
- - task_dta_list[0].NOE = 7678 
- - task_dta_list[0].LET = 4 us
- - task_dta_list[0].BCET = 4 us
- - task_dta_list[0].WCET = 4 us
- - task_dta_list[1].NOE = 7678
- - task_dta_list[1].LET = 3 us
- - task_dta_list[1].BCET = 3 us
- - task_dta_list[1].WCET = 3 us
- - task_dta_list[2].NOE = 7678
- - task_dta_list[2].LET = 2 us
- - task_dta_list[2].BCET = 2 us
- - task_dta_list[2].WCET = 2 us
+
+Después de varias ejecuciones (4 segundos) se obtuvieron los valores de las variables de telemetría para cada tarea almacenadas en `task_dta_list[index]`:
+
+* **`task_dta_list[0]` (Tarea Sensor):**
+  * `NOE` = 7678 *(Number of Execution: número total de ejecuciones de la tarea)*
+  * `LET` = 4 us *(Last Execution Time: último tiempo de ejecución medido en microsegundos)*
+  * `BCET` = 4 us *(Best-Case Execution Time: mejor tiempo de ejecución histórico registrado)*
+  * `WCET` = 4 us *(Worst-Case Execution Time: peor tiempo de ejecución histórico registrado)*
+
+* **`task_dta_list[1]` (Tarea System):**
+  * `NOE` = 7678 *(Number of Execution: número total de ejecuciones de la tarea)*
+  * `LET` = 3 us *(Last Execution Time: último tiempo de ejecución medido en microsegundos)*
+  * `BCET` = 3 us *(Best-Case Execution Time: mejor tiempo de ejecución histórico registrado)*
+  * `WCET` = 3 us *(Worst-Case Execution Time: peor tiempo de ejecución histórico registrado)*
+
+* **`task_dta_list[2]` (Tarea Actuator):**
+  * `NOE` = 7678 *(Number of Execution: número total de ejecuciones de la tarea)*
+  * `LET` = 2 us *(Last Execution Time: último tiempo de ejecución medido en microsegundos)*
+  * `BCET` = 2 us *(Best-Case Execution Time: mejor tiempo de ejecución histórico registrado)*
+  * `WCET` = 2 us *(Worst-Case Execution Time: peor tiempo de ejecución histórico registrado)*
