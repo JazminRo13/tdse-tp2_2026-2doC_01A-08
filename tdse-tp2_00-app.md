@@ -1,3 +1,5 @@
+# Resolución de los Pasos 12 y 13
+
 # 1. Análisis y Explicación del Código Fuente
 
 A continuación se detalla el funcionamiento de los archivos que componen la lógica de control principal y medición de tiempos (profiling) en la aplicación *Bare Metal - Event-Triggered Systems (ETS)*.
@@ -70,4 +72,3 @@ Después de varias ejecuciones (4 segundos) valor de la variable:
  - task_dta_list[2].LET = 2 us
  - task_dta_list[2].BCET = 2 us
  - task_dta_list[2].WCET = 2 us
-

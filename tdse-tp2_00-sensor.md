@@ -1,4 +1,4 @@
-# Análisis del Código Fuente y Tareas
+# Resolución del Paso 15
 
 ### 1. Funcionalidad de los Archivos
 * **`task_sensor_attribute.h` y `task_system_attribute.h`**: Definen las estructuras de datos, estados (ej. `ST_BTN_IDLE`, `ST_BTN_ACTIVE`) y eventos (ej. `EV_BTN_UP`, `EV_BTN_DOWN`) para las tareas del sensor y del sistema respectivamente.

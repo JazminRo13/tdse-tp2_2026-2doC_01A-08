@@ -1,3 +1,5 @@
+# Resolución del Paso 09
+
 # 1. Análisis y Explicación del Código Fuente
 
 ### A. `startup_stm32f103rbtx.s` (Código de Arranque en Ensamblador)
@@ -7,22 +9,23 @@ Este archivo es el script de arranque (startup) del microcontrolador.
   1. **Llamada a `SystemInit`**: Invoca la configuración inicial del sistema de reloj.
   2. **Inicialización de `.data`**: Copia los valores iniciales de las variables desde la memoria Flash hacia la memoria RAM.
   3. **Limpieza de `.bss`**: Pone a cero la sección de RAM reservada para variables globales no inicializadas.
-  4. **Llamada a `__libc_init_array`**: Ejecuta las inicializaciones necesarias de la librería.
+  4. **Llamada a `__libc_init_array`**: Ejecuta las inicializaciones necesarias de la librería de C.
   5. **Salto a `main`**: Cede el control a la función principal `main()` de la aplicación.
 
 ### B. `stm32f1xx_it.c` (Manejadores de Interrupciones / ISR)
 Contiene las Rutinas de Servicio de Interrupción para excepciones y periféricos.
 * **Excepciones del Sistema**: Manejadores de fallos como `NMI_Handler`, `HardFault_Handler`, `MemManage_Handler`, `BusFault_Handler` y `UsageFault_Handler` están configurados como bucles infinitos (`while (1)`) para atrapar errores fatales.
-* **`SysTick_Handler`**: Es la interrupción periódica del temporizador del sistema. Llama a `HAL_IncTick()` para incrementar el contador de tiempo y a `HAL_SYSTICK_IRQHandler()`.
-* **`EXTI15_10_IRQHandler`**: Maneja las interrupciones externas, delegando el evento del pin `B1_Pin` a la función de la HAL `HAL_GPIO_EXTI_IRQHandler(B1_Pin)`.
+* **`SysTick_Handler`**: Es la interrupción periódica del temporizador del sistema. Llama a `HAL_IncTick()` para incrementar el contador de tiempo principal y a `HAL_SYSTICK_IRQHandler()`.
+* **`EXTI15_10_IRQHandler`**: Maneja las interrupciones externas, delegando el evento del pin `B1_Pin` a la función de la capa HAL `HAL_GPIO_EXTI_IRQHandler(B1_Pin)`.
 
 ### C. `main.c` (Aplicación Principal)
 Es el archivo donde se configura el hardware y se ejecuta la lógica del programa.
 * **Ejecución de `main()`**:
-  1. **`HAL_Init()`**: Inicializa la capa de abstracción de hardware, resetea periféricos, inicializa la interfaz Flash y el Systick.
-  2. **`SystemClock_Config()`**: Configura el reloj del sistema usando el oscilador HSI. Ajusta el PLL dividiendo la fuente HSI por 2 y multiplicándola por 16. También establece los divisores para los buses AHB y APB.
-  3. **Inicialización de hardware y aplicación**: Ejecuta la configuración de GPIO (`MX_GPIO_Init()`), la UART (`MX_USART2_UART_Init()`) y la inicialización propia del usuario (`app_init()`).
-  4. **Bucle principal**: Entra en un `while (1)` donde ejecuta continuamente `app_update()`.
+  1. **Semihosting (Opcional)**: Dependiendo de la configuración del proyecto, invoca `initialise_monitor_handles()` para habilitar la depuración y salida por consola.
+  2. **`HAL_Init()`**: Inicializa la capa de abstracción de hardware, resetea periféricos, inicializa la interfaz Flash y el Systick.
+  3. **`SystemClock_Config()`**: Configura el reloj del sistema usando el oscilador HSI. Ajusta el PLL dividiendo la fuente HSI por 2 y multiplicándola por 16. También establece los divisores para los buses AHB y APB.
+  4. **Inicialización de hardware y aplicación**: Ejecuta la configuración de GPIO (`MX_GPIO_Init()`), la UART (`MX_USART2_UART_Init()`) y la inicialización propia de la arquitectura de la aplicación (`app_init()`).
+  5. **Bucle principal**: Entra en un `while (1)` donde ejecuta continuamente `app_update()` para procesar las máquinas de estado sin bloquear la CPU.
 
 ---
 
@@ -30,16 +33,16 @@ Es el archivo donde se configura el hardware y se ejecuta la lógica del program
 
 ### A. Etapa 1: Desde `Reset_Handler` hasta antes de `main()`
 * **`SystemCoreClock`**: Arranca asumiendo la frecuencia inicial dictada por `SystemInit` (típicamente utilizando el HSI de 8 MHz por defecto).
-* **SysTick**: El hardware SysTick se encuentra deshabilitado y las variables de tiempo (como `uwTick` en `.bss`) son puestas a 0.
+* **SysTick**: El hardware SysTick se encuentra deshabilitado y las variables de tiempo (como la variable de conteo ubicada en `.bss`) son inicializadas a 0.
 
 ### B. Etapa 2: Ejecución de `HAL_Init()` dentro de `main()`
 * **`SystemCoreClock`**: Permanece en su valor inicial base (8 MHz).
 * **SysTick**: La función `HAL_Init()` inicializa y arranca el temporizador SysTick. A partir de este momento, genera una interrupción (típicamente cada 1 ms) que incrementa la variable global mediante `SysTick_Handler` y `HAL_IncTick()`.
 
 ### C. Etapa 3: Ejecución de `SystemClock_Config()`
-* **`SystemCoreClock`**: Tras la configuración del PLL (HSI / 2 * 16), la frecuencia principal del sistema sube a 64 MHz[cite: 1]. La variable global de la HAL encargada de rastrear esta frecuencia se actualiza a este nuevo valor.
+* **`SystemCoreClock`**: Tras la configuración del PLL (HSI / 2 * 16), la frecuencia principal del sistema sube a 64 MHz. La variable global de la HAL encargada de rastrear esta frecuencia se actualiza a este nuevo valor.
 * **SysTick**: Las funciones internas de la HAL reajustan el valor de recarga (LOAD) del hardware SysTick basándose en la nueva frecuencia de 64 MHz para mantener un intervalo constante de 1 ms. La variable contadora de tiempo no se reinicia; conserva los milisegundos acumulados desde que inició.
 
 ### D. Etapa 4: Entrada al `while (1)`
 * **`SystemCoreClock`**: Se mantiene constante en 64 MHz.
-* **SysTick**: La interrupción de hardware sigue activa y ejecutándose de forma transparente en segundo plano. La variable de tiempo continuará incrementándose infinitamente cada milisegundo mientras la aplicación repite `app_update()`.
+* **SysTick**: La interrupción de hardware sigue activa y ejecutándose de forma transparente en segundo plano. La variable de tiempo continuará incrementándose infinitamente cada milisegundo mientras la aplicación repite la llamada a `app_update()`.

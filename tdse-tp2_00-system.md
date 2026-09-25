@@ -1,3 +1,5 @@
+# Resolución del Paso 18
+
 # Análisis del Subsistema "Task System" y Actuador
 
 ### 1. Evolución de Variables de `task_system_dta_list`

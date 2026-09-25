@@ -1,3 +1,6 @@
+# Resolución del Paso 21
+
+
 # Análisis del Subsistema "Task Actuator"
 
 ### 1. Evolución de Variables en `task_actuator_dta_list`
