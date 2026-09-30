@@ -21,24 +21,22 @@ if ((true == p_task_system_dta->flag) && (EV_SYS_CAMERA == p_task_system_dta->ev
 
 ---
 
-## Resultados de Telemetría
-
 Luego de varias ejecuciones de `app_update()`, se leyeron y almacenaron los valores correspondientes a cada tarea del sistema:
 
-### `task_dta_list[0]` (Tarea Sensor)
-* **NOE** (Number of Execution): **7592** (número total de ejecuciones de la tarea)
-* **LET** (Last Execution Time): **12 us** (último tiempo de ejecución medido en microsegundos)
-* **BCET** (Best-Case Execution Time): **12 us** (mejor tiempo de ejecución histórico registrado)
-* **WCET** (Worst-Case Execution Time): **12 us** (peor tiempo de ejecución histórico registrado)
+* **`task_dta_list[0]` (Tarea Sensor):**
+  * `NOE` = 7592 *(Number of Execution: número total de ejecuciones de la tarea)*
+  * `LET` = 12 us *(Last Execution Time: último tiempo de ejecución medido en microsegundos)*
+  * `BCET` = 12 us *(Best-Case Execution Time: mejor tiempo de ejecución histórico registrado)*
+  * `WCET` = 12 us *(Worst-Case Execution Time: peor tiempo de ejecución histórico registrado)*
 
-### `task_dta_list[1]` (Tarea System)
-* **NOE** (Number of Execution): **7592** (número total de ejecuciones de la tarea)
-* **LET** (Last Execution Time): **3 us** (último tiempo de ejecución medido en microsegundos)
-* **BCET** (Best-Case Execution Time): **3 us** (mejor tiempo de ejecución histórico registrado)
-* **WCET** (Worst-Case Execution Time): **4 us** (peor tiempo de ejecución histórico registrado)
+* **`task_dta_list[1]` (Tarea System):**
+  * `NOE` = 7592 *(Number of Execution: número total de ejecuciones de la tarea)*
+  * `LET` = 3 us *(Last Execution Time: último tiempo de ejecución medido en microsegundos)*
+  * `BCET` = 3 us *(Best-Case Execution Time: mejor tiempo de ejecución histórico registrado)*
+  * `WCET` = 4 us *(Worst-Case Execution Time: peor tiempo de ejecución histórico registrado)*
 
-### `task_dta_list[2]` (Tarea Actuator)
-* **NOE** (Number of Execution): **7592** (número total de ejecuciones de la tarea)
-* **LET** (Last Execution Time): **2 us** (último tiempo de ejecución medido en microsegundos)
-* **BCET** (Best-Case Execution Time): **2 us** (mejor tiempo de ejecución histórico registrado)
-* **WCET** (Worst-Case Execution Time): **2 us** (peor tiempo de ejecución histórico registrado)
+* **`task_dta_list[2]` (Tarea Actuator):**
+  * `NOE` = 7592 *(Number of Execution: número total de ejecuciones de la tarea)*
+  * `LET` = 2 us *(Last Execution Time: último tiempo de ejecución medido en microsegundos)*
+  * `BCET` = 2 us *(Best-Case Execution Time: mejor tiempo de ejecución histórico registrado)*
+  * `WCET` = 2 us *(Worst-Case Execution Time: peor tiempo de ejecución histórico registrado)*

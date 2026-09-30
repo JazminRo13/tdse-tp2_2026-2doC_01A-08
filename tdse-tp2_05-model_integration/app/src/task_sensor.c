@@ -56,19 +56,18 @@
 #define SENSOR_DTA_QTY		SENSOR_CFG_QTY
 
 /********************** internal data declaration ****************************/
+
 const task_sensor_cfg_t task_sensor_cfg_list[] = {
 	{ID_BTN_A,  BTN_A_PORT,  BTN_A_PIN,  BTN_A_PRESSED, DEL_BTN_MAX,
-	 EV_SYS_IDLE, EV_SYS_IDLE},         /* Botón A: No se usa (libre) */
-
+	 EV_SYS_IDLE, EV_SYS_ACTIVE},
 	{ID_BTN_B,  BTN_B_PORT,  BTN_B_PIN,  BTN_B_PRESSED, DEL_BTN_MAX,
-	 EV_SYS_IDLE, EV_SYS_CAMERA},       /* Botón B: Dispara la detección de la cámara */
-
+	 EV_SYS_IDLE, EV_SYS_ACTIVE},
 	{ID_BTN_C,  BTN_C_PORT,  BTN_C_PIN,  BTN_C_PRESSED, DEL_BTN_MAX,
-	 EV_SYS_IDLE, EV_SYS_BUTTON},       /* Botón C: Simula la pulsación del botón de apertura */
-
+	 EV_SYS_IDLE, EV_SYS_ACTIVE},
 	{ID_BTN_D,  BTN_D_PORT,  BTN_D_PIN,  BTN_D_PRESSED, DEL_BTN_MAX,
-	 EV_SYS_IDLE, EV_SYS_SENSOR_COIL}   /* Botón D: Simula el sensor de lazo magnético de salida */
+	 EV_SYS_IDLE, EV_SYS_ACTIVE}
 };
+
 task_sensor_dta_t task_sensor_dta_list[SENSOR_DTA_QTY];
 
 /********************** internal functions declaration ***********************/

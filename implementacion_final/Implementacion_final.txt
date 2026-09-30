@@ -1,0 +1,21 @@
+## Conexión de Periféricos y Eventos (Paso Adicional)
+
+Este apartado no estaba contemplado originalmente en los requerimientos del paso, pero fue desarrollado con el fin de conectar los pulsadores físicos de la tarea de sensores (`task_sensor`) con los eventos que disparan las acciones en `task_system`. De este modo, es posible inyectar estímulos manuales y observar el comportamiento dinámico del programa en tiempo real.
+
+Para lograr esta integración, se modificó el arreglo de configuración en la tarea de sensores agregando la siguiente estructura:
+
+```c
+const task_sensor_cfg_t task_sensor_cfg_list[] = {
+	{ID_BTN_A,  BTN_A_PORT,  BTN_A_PIN,  BTN_A_PRESSED, DEL_BTN_MAX,
+	 EV_SYS_IDLE, EV_SYS_IDLE},        // Botón A: No se usa (libre)
+
+	{ID_BTN_B,  BTN_B_PORT,  BTN_B_PIN,  BTN_B_PRESSED, DEL_BTN_MAX,
+	 EV_SYS_IDLE, EV_SYS_CAMERA},       // Botón B: Dispara la detección de la cámara
+
+	{ID_BTN_C,  BTN_C_PORT,  BTN_C_PIN,  BTN_C_PRESSED, DEL_BTN_MAX,
+	 EV_SYS_IDLE, EV_SYS_BUTTON},        // Botón C: Simula la pulsación del botón de apertura
+     
+	{ID_BTN_D,  BTN_D_PORT,  BTN_D_PIN,  BTN_D_PRESSED, DEL_BTN_MAX,
+	 EV_SYS_IDLE, EV_SYS_SENSOR_COIL}    // Botón D: Simula el sensor de lazo magnético de salida
+};
+```
